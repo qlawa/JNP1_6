@@ -1,37 +1,32 @@
-//
-//  horror_example.cc
-//  horror-movie-2
-//
-//  Created by Patrycja Wegrzynowicz on 12/10/16.
-//  Copyright (c) 2016 Patrycja Wegrzynowicz. All rights reserved.
-//
-
 #include "citizen.h"
 #include "monster.h"
 #include "smalltown.h"
 
-int main(int argc, const char * argv[]) {
-    auto groupOfMonsters = createGroupOfMonsters({
-                                                         createMummy(90, 1),
-                                                         createZombie(20, 1),
-                                                         createVampire(30, 1)
-                                                 });
+int main(int argc, const char *argv[]) {
+
+    auto mummy = createMummy(10, 20);
+
     auto smallTown = SmallTown::Builder()
-            .monster(groupOfMonsters)
+            .monster(mummy)
+            .citizen(createSheriff(1, 20, 9))
+            .citizen(createTeenager(1,17))
             .startTime(3)
-            .maxTime(27)
-            .citizen(createSheriff(100, 35, 20))
-            .citizen(createAdult(100, 21))
-            .citizen(createTeenager(50, 14))
+            .maxTime(6)
             .build();
 
-    smallTown.tick(18);
-    smallTown.tick(3);
+    auto status1 = smallTown.getStatus();
 
-    auto status = smallTown.getStatus();
-    assert(status.getMonsterName() == "GroupOfMonsters");
-    assert(status.getMonsterHealth() == 80);
-    assert(status.getAliveCitizens() == 3);
+    assert(status1.getMonsterHealth() == 10);
+    assert(status1.getAliveCitizens() == 2);
+
+    smallTown.tick(2);
+
+    auto status2 = smallTown.getStatus();
+
+    assert(status2.getMonsterHealth() == 1);
+    assert(status2.getAliveCitizens() == 0);
+
+    smallTown.tick(1);
 
     return 0;
 }

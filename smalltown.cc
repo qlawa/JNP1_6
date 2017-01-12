@@ -1,9 +1,17 @@
 #include "smalltown.h"
 #include<iostream>
+#include <exception>
 
 //Builder
-
+class UndefinedBehaviour : public std::exception {
+    const char *what() const throw() {
+        return "undefined behaviour";
+    }
+};
 SmallTown SmallTown::Builder::build() {
+    if (b_t0 < 0 || b_t1 <= b_t0 || b_monster_base == nullptr || b_citizens.size() == 0) {
+        throw UndefinedBehaviour();
+    }
     assert(b_t0 >= 0);
     assert(b_t1 > b_t0); // poprawka
     auto st = SmallTown(b_t0, b_t1, b_monster_base, Status(b_monster_base->getName(), b_monster_base->getHealth(), (int)b_citizens.size()));
