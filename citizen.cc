@@ -36,21 +36,21 @@ AttackPower Sheriff::getAttackPower() const {
 
 // Create
 
-Adult createAdult(HealthPoints health, Age age) {
+std::shared_ptr<Adult> createAdult(HealthPoints health, Age age) {
     assert(age >= 18 && age <= 100);
     assert(health > 0);
-    return Adult(health, age);
+    return std::make_shared<Adult>(Adult(health, age));
 }
 
-Teenager createTeenager(HealthPoints health, Age age) {
+std::shared_ptr<Teenager> createTeenager(HealthPoints health, Age age) {
     assert(age >= 11 && age <= 17);
     assert(health > 0);
-    return Teenager(health, age);
+    return std::make_shared<Teenager>(Teenager(health, age));
 }
 
-Sheriff createSheriff(HealthPoints health, Age age, AttackPower attack) {
+std::shared_ptr<Sheriff> createSheriff(HealthPoints health, Age age, AttackPower attack) {
     assert(age > 0);
     assert(health > 0);
     assert(attack > 0);
-    return Sheriff(health, age, attack);
+    return std::make_shared<Sheriff>(Sheriff(health, age, attack));
 }
