@@ -26,57 +26,91 @@ namespace {
         }
     }
 
-    void attack(std::vector<std::shared_ptr<Citizen>> citizens, std::shared_ptr<MonsterBase> m, Status &s) {
-        auto c = citizens.begin();
-        AttackPower monsterPower = m->getAttackPower();
-        while (monsterPower > 0 && c != citizens.end()) {
-            if ((*c)->getHealth() != 0) {
-                (*c)->takeDamage(monsterPower);
-                if ((*c)->getHealth() == 0) {
-                    s.decreaseAlive();
+    void attack(std::vector<std::shared_ptr<Citizen>> citizens,
+                std::shared_ptr<MonsterBase> monster, Status &status) {
+        auto citizen = citizens.begin();
+        AttackPower monsterPower = monster->getAttackPower();
+        while (monsterPower > 0 && citizen != citizens.end()) {
+            if ((*citizen)->getHealth() != 0) {
+                (*citizen)->takeDamage(monsterPower);
+                if ((*citizen)->getHealth() == 0) {
+                    status.decreaseAlive();
                 }
-                (*c)->defendYourself(m);
-                if (m->getHealth() == 0) {
-                    monsterPower -= m->getAttackPower();
+                (*citizen)->defendYourself(monster);
+                if (monster->getHealth() == 0) {
+                    monsterPower -= monster->getAttackPower();
                 }
             }
-            s.decreaseHp(s.getMonsterHealth() - m->getHealth());
-            c++;
+            status.decreaseHp(status.getMonsterHealth() - monster->getHealth());
+            citizen++;
         }
 
     }
 }
 
 SmallTown SmallTown::Builder::build() {
-    if (b_t0 < 0 || b_t1 < b_t0 || b_monster_base == nullptr || b_citizens.size() == 0) {
+    if (buildT0 < 0 || buildT1 < buildT0 || buidMonsterBase == nullptr || buildCitizens.size() == 0) {
         throw UndefinedBehaviour();
     }
-    assert(b_t0 >= 0);
-    assert(b_t1 >= b_t0);
-    auto st = SmallTown(b_t0, b_t1, b_monster_base, Status(b_monster_base->getName(), b_monster_base->getHealth(), (int)b_citizens.size()));
-    st.citizens = b_citizens;
+    assert(buildT0 >= 0);
+    assert(buildT1 >= buildT0);
+    auto st = SmallTown(buildT0, buildT1, buidMonsterBase, Status(buidMonsterBase->getName(),
+           buidMonsterBase->getHealth(), (int)buildCitizens.size()));
+    st.citizens = buildCitizens;
     return st;
 }
 
 void SmallTown::tick(Time timeStep) {
-    checkStatus(this->getStatus());
-    if (isAGoodTimeForAttack(act_time)) {
-        attack(this->citizens, this->monster_base, this->status);
+    checkStatus(getStatus());
+    if (isAGoodTimeForAttack(actTime)) {
+        attack(citizens, monsterBase, status);
     }
-    act_time += timeStep;
-    act_time %= (t1 + 1);
+    actTime += timeStep;
+    actTime %= (t1 + 1);
 
 }
 
 SmallTown::Builder::Builder() {
-    b_t1 = -1;
-    b_t0 = -1;
-    b_monster_base = nullptr;
+    buildT1 = -1;
+    buildT0 = -1;
+    buidMonsterBase = nullptr;
 }
 
 SmallTown::SmallTown(Time t0, Time t1, std::shared_ptr<MonsterBase> m, Status s) :
-        act_time(t0),
+        actTime(t0),
         t1(t1),
-        monster_base(m),
-        status(s) {
+        monsterBase(m),
+        status(s) { }
+
+MyStatus::MyStatus(std::string name, HealthPoints healthPoints, int aliveCitizens) :
+        name(name),
+        healthPoints(healthPoints),
+        aliveCitizens(aliveCitizens) { }
+
+std::string MyStatus::getMonsterName() { return name; }
+
+HealthPoints MyStatus::getMonsterHealth() { return healthPoints; }
+
+int MyStatus::getAliveCitizens() { return aliveCitizens; }
+
+void MyStatus::decreaseHp(HealthPoints hp) {
+    healthPoints -= hp;
+}
+
+void MyStatus::decreaseAlive() {
+    aliveCitizens--;
+}
+
+int SmallTown::getAlive() {
+    int alive = 0;
+    for (auto c : citizens) {
+        if (c->getHealth() > 0) {
+            alive++;
+        }
+    }
+    return alive;
+}
+
+Status &SmallTown::getStatus() {
+    return status;
 }

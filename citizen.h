@@ -1,8 +1,9 @@
 #ifndef CITIZEN_H
 #define CITIZEN_H
-#include<iostream>
-#include<cassert>
-#include<memory>
+
+#include <iostream>
+#include <cassert>
+#include <memory>
 #include "monster.h"
 
 using HealthPoints = int;
@@ -20,8 +21,6 @@ public:
     void takeDamage(AttackPower damage);
 
     virtual void defendYourself(std::shared_ptr<MonsterBase>) { }
-
-    virtual void wypisz_sie() { printf("- a=%d, h=%d\n", getAge(), getHealth());}
 
 protected:
     HealthPoints health;
@@ -43,8 +42,6 @@ public:
     Sheriff(HealthPoints health, Age age, AttackPower attack);
 
     AttackPower getAttackPower() const;
-
-    void wypisz_sie() { printf("- a=%d, h=%d, p=%d\n", getAge(), getHealth(), getAttackPower());}
 
     void defendYourself(std::shared_ptr<MonsterBase> m) {
         m->takeDamage(getAttackPower());

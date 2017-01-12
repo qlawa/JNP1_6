@@ -1,32 +1,63 @@
+//
+//  horror_example.cc
+//  horror-movie-2
+//
+//  Created by Patrycja Wegrzynowicz on 12/10/16.
+//  Copyright (c) 2016 Patrycja Wegrzynowicz. All rights reserved.
+//
+
 #include "citizen.h"
 #include "monster.h"
 #include "smalltown.h"
+void test1() {
+    auto groupOfMonsters = createGroupOfMonsters({
+                                                         createMummy(90, 1),
+                                                         createZombie(20, 1),
+                                                         createVampire(30, 1)
+                                                 });
 
-int main(int argc, const char *argv[]) {
-
-    auto mummy = createMummy(10, 20);
-
+    //auto groupOfMonsters = createMummy(100, 10);
     auto smallTown = SmallTown::Builder()
-            .monster(mummy)
-            .citizen(createSheriff(1, 20, 9))
-            .citizen(createTeenager(1,17))
+            .monster(groupOfMonsters)
             .startTime(3)
-            .maxTime(6)
+            .maxTime(27)
+            .citizen(createSheriff(100, 35, 20))
+            .citizen(createAdult(100, 21))
+            .citizen(createTeenager(50, 14))
             .build();
 
-    auto status1 = smallTown.getStatus();
+    smallTown.tick(18);
+    smallTown.tick(3);
 
-    assert(status1.getMonsterHealth() == 10);
-    assert(status1.getAliveCitizens() == 2);
+    //wypisz(smallTown);
 
-    smallTown.tick(2);
+    auto status = smallTown.getStatus();
+//    printf("%s\n", status.getMonsterName().c_str());
+    assert(status.getMonsterName() == "GroupOfMonsters");
+    assert(status.getMonsterHealth() == 80);
+    assert(status.getAliveCitizens() == 3);
+    printf("Test1 passed\n");
+}
 
-    auto status2 = smallTown.getStatus();
+void test2() {
+    auto monster = createVampire(20, 100);
+    auto st = SmallTown::Builder()
+            .monster(monster)
+            .citizen(createSheriff(10, 20, 20))
+            .citizen(createTeenager(90, 13))
+            .startTime(0)
+            .maxTime(100)
+            .build();
 
-    assert(status2.getMonsterHealth() == 1);
-    assert(status2.getAliveCitizens() == 0);
+    st.tick(13);
 
-    smallTown.tick(1);
+    st.tick(0);
+    st.tick(0);
+    st.tick(0);
 
+}
+
+int main(int argc, const char * argv[]) {
+    test1();
     return 0;
 }

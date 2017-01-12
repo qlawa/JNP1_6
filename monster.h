@@ -1,8 +1,8 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 
-#include<vector>
-#include<cassert>
+#include <vector>
+#include <cassert>
 #include <cstdio>
 #include <memory>
 
@@ -15,25 +15,18 @@ protected:
     AttackPower attack;
     std::string name;
 public:
-    //MonsterBase (MonsterBase & mb) = default;
-    //virtual ~MonsterBase() = 0;
     virtual HealthPoints getHealth() const { return health; };
 
     virtual AttackPower getAttackPower() const { return attack; };
 
     virtual void takeDamage(AttackPower damage) { };
 
-    virtual void wypisz_sie() { printf("Monster:\n- h=%d, at=%d\n", getHealth(), getAttackPower()); }
-
-    //virtual void defend_yourself(MonsterBase &m) { };
     virtual std::string getName() { return name; }
 };
 
 class Monster : public MonsterBase {
 public:
     Monster(HealthPoints health, AttackPower attack, std::string name);
-
-    //Monster(Monster &m) = default;
 
     HealthPoints getHealth() const;
 
@@ -66,9 +59,6 @@ public:
 
 class GroupOfMonsters : public MonsterBase {
 public:
-
-    //GroupOfMonsters(GroupOfMonsters &gm) = default;
-
     GroupOfMonsters(std::vector<std::shared_ptr<Monster>> _monsters);
 
     GroupOfMonsters(std::initializer_list<std::shared_ptr<Monster>> _monsters);
@@ -80,14 +70,6 @@ public:
     void takeDamage(AttackPower Damage);
 
     std::string getName() { return name; }
-
-
-    void wypisz_sie() {
-        printf("Group_of_montsers:\n");
-        for (auto m : monsters) {
-            printf("- h=%d, a=%d\n", m->getHealth(), m->getAttackPower());
-        }
-    }
 
 private:
     std::vector<std::shared_ptr<Monster>> monsters;

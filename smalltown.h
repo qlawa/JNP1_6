@@ -8,56 +8,39 @@
 #include <string>
 #include <iostream>
 
-using Time = int;
-
 struct MyStatus {
 private:
     std::string name;
     HealthPoints healthPoints;
     int aliveCitizens;
 public:
-    MyStatus (std::string name, HealthPoints healthPoints, int aliveCitizens) :
-            name(name),
-            healthPoints(healthPoints),
-            aliveCitizens(aliveCitizens){}
+    MyStatus(std::string name, HealthPoints healthPoints, int aliveCitizens);
 
-    std::string getMonsterName() { return name; }
+    std::string getMonsterName();
 
-    HealthPoints getMonsterHealth() { return healthPoints; };
+    HealthPoints getMonsterHealth();;
 
-    int getAliveCitizens() { return aliveCitizens; }
+    int getAliveCitizens();
 
-    void decreaseHp(HealthPoints hp) {
-        healthPoints -= hp;
-    }
+    void decreaseHp(HealthPoints hp);
 
-    void decreaseAlive() {
-        aliveCitizens--;
-    }
+    void decreaseAlive();
 };
 
 using Status = MyStatus;
+using Time = int;
 
 
 class SmallTown {
 
 private:
-    Time act_time;
+    Time actTime;
     Time t1;
     std::vector<std::shared_ptr<Citizen>> citizens;
-    std::shared_ptr<MonsterBase> monster_base;
+    std::shared_ptr<MonsterBase> monsterBase;
     Status status;
 
-    int getAlive() {
-        //to można usprawnić zmieniając na bieżąco liczbę żywych i usuwając martwych z vectora/kolejki?
-        int alive = 0;
-        for (auto c : citizens) {
-            if (c->getHealth() > 0) {
-                alive++;
-            }
-        }
-        return alive;
-    }
+    int getAlive();
 
 public:
     class Builder {
@@ -65,64 +48,52 @@ public:
         Builder();
 
         Builder &monster(std::shared_ptr<Monster> m) {
-            b_monster_base = m;
+            buidMonsterBase = m;
             return *this;
         }
 
         Builder &monster(std::shared_ptr<GroupOfMonsters> gm) {
-            b_monster_base = gm;
+            buidMonsterBase = gm;
             return *this;
         }
 
         Builder &startTime(Time t) {
             assert(t >= 0);
-            b_t0 = t;
+            buildT0 = t;
             return *this;
         }
 
         Builder &maxTime(Time t) {
             assert(t > 0);
-            b_t1 = t;
+            buildT1 = t;
             return *this;
         }
 
         Builder &citizen(std::shared_ptr<Citizen> c) {
-            b_citizens.push_back(c);
+            buildCitizens.push_back(c);
             return *this;
         }
 
         Builder &citizen(std::shared_ptr<Sheriff> s) {
-            b_citizens.push_back(s);
+            buildCitizens.push_back(s);
             return *this;
         }
 
         SmallTown build();
 
     private:
-        Time b_t0;
-        Time b_t1;
-        std::vector<std::shared_ptr<Citizen>> b_citizens;
-        std::shared_ptr<MonsterBase> b_monster_base;
+        Time buildT0;
+        Time buildT1;
+        std::vector<std::shared_ptr<Citizen>> buildCitizens;
+        std::shared_ptr<MonsterBase> buidMonsterBase;
     };
 
     SmallTown(Time t0, Time t1, std::shared_ptr<MonsterBase> m, Status s);
 
-    Status &getStatus() {
-        return status;
-    }
+    Status & getStatus();
 
     void tick(Time timeStep);
 
-    void wypisz_potwory() {
-        monster_base->wypisz_sie();
-    }
-
-    void wypisz_mieszkancow() {
-        printf("Mieszkańcy:\n");
-        for (auto &it : citizens) {
-            it->wypisz_sie();
-        }
-    }
 };
 
 #endif //SMALLTOWN_H
