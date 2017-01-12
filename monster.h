@@ -9,14 +9,14 @@
 using HealthPoints = int;
 using AttackPower = int;
 
-class Monster_Base {
+class MonsterBase {
 protected:
     HealthPoints health;
     AttackPower attack;
     std::string name;
 public:
-    //Monster_Base (Monster_Base & mb) = default;
-    //virtual ~Monster_Base() = 0;
+    //MonsterBase (MonsterBase & mb) = default;
+    //virtual ~MonsterBase() = 0;
     virtual HealthPoints getHealth() const { return health; };
 
     virtual AttackPower getAttackPower() const { return attack; };
@@ -25,11 +25,11 @@ public:
 
     virtual void wypisz_sie() { printf("Monster:\n- h=%d, at=%d\n", getHealth(), getAttackPower()); }
 
-    //virtual void defend_yourself(Monster_Base &m) { };
+    //virtual void defend_yourself(MonsterBase &m) { };
     virtual std::string getName() { return name; }
 };
 
-class Monster : public Monster_Base {
+class Monster : public MonsterBase {
 public:
     Monster(HealthPoints health, AttackPower attack, std::string name);
 
@@ -64,7 +64,7 @@ public:
     Vampire(HealthPoints health, AttackPower attack);
 };
 
-class GroupOfMonsters : public Monster_Base {
+class GroupOfMonsters : public MonsterBase {
 public:
 
     //GroupOfMonsters(GroupOfMonsters &gm) = default;

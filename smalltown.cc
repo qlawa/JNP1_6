@@ -6,7 +6,7 @@
 SmallTown SmallTown::Builder::build() {
     assert(b_t0 >= 0);
     assert(b_t1 > b_t0); // poprawka
-    auto st = SmallTown(b_t0, b_t1, b_monster_base);
+    auto st = SmallTown(b_t0, b_t1, b_monster_base, Status(b_monster_base->getName(), b_monster_base->getHealth(), (int)b_citizens.size()));
     st.citizens = b_citizens;
     return st;
 }
@@ -28,13 +28,21 @@ void checkStatus(Status status) {
     }
 }
 
-void attack(std::vector<std::shared_ptr<Citizen>> citizens, std::shared_ptr<Monster_Base> m) {
+void attack(std::vector<std::shared_ptr<Citizen>> citizens, std::shared_ptr<MonsterBase> m, Status &s) {
     auto c = citizens.begin();
-    AttackPower monster_power = m->getAttackPower();
-    HealthPoints citizen_hp = (*c)->getHealth();
-    while (monster_power > 0 && c != citizens.end()) {
-        (*c)->takeDamage(monster_power);
-        (*c)->defendYourself(m);
+    AttackPower monsterPower = m->getAttackPower();
+    while (monsterPower > 0 && c != citizens.end()) {
+        if ((*c)->getHealth() != 0) {
+            (*c)->takeDamage(monsterPower);
+            if ((*c)->getHealth() == 0) {
+                s.decreaseAlive();
+            }
+            (*c)->defendYourself(m);
+            if (m->getHealth() == 0) {
+                monsterPower-=m->getAttackPower();
+            }
+        }
+        s.decreaseHp(s.getMonsterHealth()- m->getHealth());
         c++;
     }
 
@@ -43,7 +51,7 @@ void attack(std::vector<std::shared_ptr<Citizen>> citizens, std::shared_ptr<Mons
 void SmallTown::tick(Time timeStep) {
     checkStatus(this->getStatus());
     if (isAGoodTimeForAttack(act_time)) {
-        attack(this->citizens, this->monster_base);
+        attack(this->citizens, this->monster_base, this->status);
     }
     act_time += timeStep;
     act_time %= (t1 + 1); // poprawka
@@ -56,5 +64,9 @@ SmallTown::Builder::Builder() {
     b_monster_base = nullptr;
 }
 
-SmallTown::SmallTown(Time t0, Time t1, std::shared_ptr<Monster_Base> m) : act_time(t0), t1(t1), monster_base(m) {
+SmallTown::SmallTown(Time t0, Time t1, std::shared_ptr<MonsterBase> m, Status s) :
+        act_time(t0),
+        t1(t1),
+        monster_base(m),
+        status(s) {
 }

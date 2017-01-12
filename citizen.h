@@ -19,7 +19,7 @@ public:
 
     void takeDamage(AttackPower damage);
 
-    virtual void defendYourself(std::shared_ptr<Monster_Base>) { }
+    virtual void defendYourself(std::shared_ptr<MonsterBase>) { }
 
     virtual void wypisz_sie() { printf("- a=%d, h=%d\n", getAge(), getHealth());}
 
@@ -46,7 +46,7 @@ public:
 
     void wypisz_sie() { printf("- a=%d, h=%d, p=%d\n", getAge(), getHealth(), getAttackPower());}
 
-    void defendYourself(std::shared_ptr<Monster_Base> m) {
+    void defendYourself(std::shared_ptr<MonsterBase> m) {
         m->takeDamage(getAttackPower());
     }
 

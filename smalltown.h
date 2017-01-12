@@ -11,16 +11,29 @@
 using Time = int;
 
 struct MyStatus {
-public:
+private:
     std::string name;
     HealthPoints healthPoints;
     int aliveCitizens;
 public:
+    MyStatus (std::string name, HealthPoints healthPoints, int aliveCitizens) :
+            name(name),
+            healthPoints(healthPoints),
+            aliveCitizens(aliveCitizens){}
+
     std::string getMonsterName() { return name; }
 
     HealthPoints getMonsterHealth() { return healthPoints; };
 
     int getAliveCitizens() { return aliveCitizens; }
+
+    void decreaseHp(HealthPoints hp) {
+        healthPoints -= hp;
+    }
+
+    void decreaseAlive() {
+        aliveCitizens--;
+    }
 };
 
 using Status = MyStatus;
@@ -32,7 +45,7 @@ private:
     Time act_time;
     Time t1;
     std::vector<std::shared_ptr<Citizen>> citizens;
-    std::shared_ptr<Monster_Base> monster_base;
+    std::shared_ptr<MonsterBase> monster_base;
     Status status;
 
     int getAlive() {
@@ -89,15 +102,15 @@ public:
         Time b_t0;
         Time b_t1;
         std::vector<std::shared_ptr<Citizen>> b_citizens;
-        std::shared_ptr<Monster_Base> b_monster_base;
+        std::shared_ptr<MonsterBase> b_monster_base;
     };
 
-    SmallTown(Time t0, Time t1, std::shared_ptr<Monster_Base> m);
+    SmallTown(Time t0, Time t1, std::shared_ptr<MonsterBase> m, Status s);
 
     Status &getStatus() {
-        status.name = monster_base->getName();
-        status.healthPoints = monster_base->getHealth();
-        status.aliveCitizens = getAlive();
+        //status.name = monster_base->getName();
+        //status.healthPoints = monster_base->getHealth();
+        //status.aliveCitizens = getAlive();
         return status;
     }
 
