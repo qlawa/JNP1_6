@@ -3,7 +3,7 @@
 // Citizen
 
 Citizen::Citizen(HealthPoints health, Age age) :
-        health(health), age(age) {}
+        health(health), age(age) { }
 
 HealthPoints Citizen::getHealth() const {
     return health;
@@ -19,16 +19,16 @@ void Citizen::takeDamage(AttackPower damage) {
 
 // Adult
 
-Adult::Adult(HealthPoints health, Age age) : Citizen(health, age){};
+Adult::Adult(HealthPoints health, Age age) : Citizen(health, age) { };
 
 // Teenager
 
-Teenager::Teenager(HealthPoints health, Age age) : Citizen(health, age){};
+Teenager::Teenager(HealthPoints health, Age age) : Citizen(health, age) { };
 
 // Sheriff
 
 Sheriff::Sheriff(HealthPoints health, Age age, AttackPower attack) :
-    Citizen(health, age), attack(attack) {}
+        Citizen(health, age), attack(attack) { }
 
 AttackPower Sheriff::getAttackPower() const {
     return attack;

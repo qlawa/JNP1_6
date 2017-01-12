@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <iostream>
 
 using Time = int;
 
@@ -15,9 +16,11 @@ public:
     HealthPoints healthPoints;
     int aliveCitizens;
 public:
-    std::string getMonsterName(){ return name;}
-    HealthPoints getMonsterHealth() { return healthPoints;};
-    int getAliveCitizens() { return  aliveCitizens;}
+    std::string getMonsterName() { return name; }
+
+    HealthPoints getMonsterHealth() { return healthPoints; };
+
+    int getAliveCitizens() { return aliveCitizens; }
 };
 
 using Status = MyStatus;
@@ -35,7 +38,7 @@ private:
     int getAlive() {
         //to można usprawnić zmieniając na bieżąco liczbę żywych i usuwając martwych z vectora/kolejki?
         int alive = 0;
-        for(auto c : citizens) {
+        for (auto c : citizens) {
             if (c->getHealth() > 0) {
                 alive++;
             }
@@ -52,19 +55,20 @@ public:
             b_monster_base = m;
             return *this;
         }
+
         Builder &monster(std::shared_ptr<GroupOfMonsters> gm) {
             b_monster_base = gm;
             return *this;
         }
 
         Builder &startTime(Time t) {
-            assert(t>=0);
+            assert(t >= 0);
             b_t0 = t;
             return *this;
         }
 
         Builder &maxTime(Time t) {
-            assert(t>0);
+            assert(t > 0);
             b_t1 = t;
             return *this;
         }
@@ -90,7 +94,7 @@ public:
 
     SmallTown(Time t0, Time t1, std::shared_ptr<Monster_Base> m);
 
-    Status& getStatus() {
+    Status &getStatus() {
         status.name = monster_base->getName();
         status.healthPoints = monster_base->getHealth();
         status.aliveCitizens = getAlive();
@@ -102,6 +106,7 @@ public:
     void wypisz_potwory() {
         monster_base->wypisz_sie();
     }
+
     void wypisz_mieszkancow() {
         printf("Mieszkańcy:\n");
         for (auto &it : citizens) {
@@ -109,7 +114,5 @@ public:
         }
     }
 };
-
-
 
 #endif //SMALLTOWN_H

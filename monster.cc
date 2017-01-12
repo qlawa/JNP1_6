@@ -3,7 +3,7 @@
 // Monster
 
 Monster::Monster(HealthPoints health, AttackPower attack, std::string name) :
-        health(health), attack(attack), name(name) {}
+        health(health), attack(attack), name(name) { }
 
 HealthPoints Monster::getHealth() const {
     return health;
@@ -20,17 +20,17 @@ void Monster::takeDamage(AttackPower damage) {
 // Zombie
 
 Zombie::Zombie(HealthPoints health, AttackPower attack) :
-        Monster(health, attack, "Zombie") {}
+        Monster(health, attack, "Zombie") { }
 
 // Mummy
 
 Mummy::Mummy(HealthPoints health, AttackPower attack) :
-        Monster(health, attack, "Mummy") {}
+        Monster(health, attack, "Mummy") { }
 
 // Vampire
 
 Vampire::Vampire(HealthPoints health, AttackPower attack) :
-        Monster(health, attack, "Vampire") {}
+        Monster(health, attack, "Vampire") { }
 
 // Create
 
@@ -51,11 +51,11 @@ std::shared_ptr<Vampire> createVampire(HealthPoints health, AttackPower attack) 
 
 // GroupOfMonsters
 
-GroupOfMonsters::GroupOfMonsters(std::vector<std::shared_ptr<Monster>> _monsters) : name("GroupOfMonsters"){
+GroupOfMonsters::GroupOfMonsters(std::vector<std::shared_ptr<Monster>> _monsters) : name("GroupOfMonsters") {
     monsters.insert(monsters.end(), _monsters.begin(), _monsters.end());
 }
 
-GroupOfMonsters::GroupOfMonsters(std::initializer_list<std::shared_ptr<Monster>> _monsters)  : name("GroupOfMonsters") {
+GroupOfMonsters::GroupOfMonsters(std::initializer_list<std::shared_ptr<Monster>> _monsters) : name("GroupOfMonsters") {
     monsters.insert(monsters.end(), _monsters.begin(), _monsters.end());
 }
 
@@ -67,7 +67,7 @@ HealthPoints GroupOfMonsters::getHealth() const {
     return groupHealth;
 }
 
-AttackPower GroupOfMonsters::getAttackPower() const{
+AttackPower GroupOfMonsters::getAttackPower() const {
     AttackPower groupAttack = 0;
     for (auto monster : monsters) {
         if (monster->getHealth() != 0) {
@@ -92,4 +92,3 @@ std::shared_ptr<GroupOfMonsters> createGroupOfMonsters(std::vector<std::shared_p
 std::shared_ptr<GroupOfMonsters> createGroupOfMonsters(std::initializer_list<std::shared_ptr<Monster>> monsters) {
     return std::make_shared<GroupOfMonsters>(GroupOfMonsters(monsters));
 }
-

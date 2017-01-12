@@ -1,5 +1,6 @@
 #ifndef CITIZEN_H
 #define CITIZEN_H
+
 #include<iostream>
 #include<cassert>
 #include<memory>
@@ -21,7 +22,7 @@ public:
 
     virtual void defendYourself(std::shared_ptr<Monster_Base>) { }
 
-    virtual void wypisz_sie() { printf("- a=%d, h=%d\n", getAge(), getHealth());}
+    virtual void wypisz_sie() { printf("- a=%d, h=%d\n", getAge(), getHealth()); }
 
 protected:
     HealthPoints health;
@@ -44,7 +45,7 @@ public:
 
     AttackPower getAttackPower() const;
 
-    void wypisz_sie() { printf("- a=%d, h=%d, p=%d\n", getAge(), getHealth(), getAttackPower());}
+    void wypisz_sie() { printf("- a=%d, h=%d, p=%d\n", getAge(), getHealth(), getAttackPower()); }
 
     void defendYourself(std::shared_ptr<Monster_Base> m) {
         m->takeDamage(getAttackPower());

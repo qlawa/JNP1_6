@@ -1,5 +1,6 @@
 #ifndef MONSTER_H
 #define MONSTER_H
+
 #include<vector>
 #include<cassert>
 #include <cstdio>
@@ -16,15 +17,19 @@ protected:
 public:
     //Monster_Base (Monster_Base & mb) = default;
     //virtual ~Monster_Base() = 0;
-    virtual HealthPoints getHealth() const {return health;};
-    virtual AttackPower getAttackPower() const { return attack;};
+    virtual HealthPoints getHealth() const { return health; };
+
+    virtual AttackPower getAttackPower() const { return attack; };
+
     virtual void takeDamage(AttackPower damage) { };
-    virtual void wypisz_sie() {printf("Monster:\n- h=%d, at=%d\n", getHealth(), getAttackPower());}
+
+    virtual void wypisz_sie() { printf("Monster:\n- h=%d, at=%d\n", getHealth(), getAttackPower()); }
+
     //virtual void defend_yourself(Monster_Base &m) { };
-    virtual std::string getName() {return name;}
+    virtual std::string getName() { return name; }
 };
 
-class Monster : public Monster_Base{
+class Monster : public Monster_Base {
 public:
     Monster(HealthPoints health, AttackPower attack, std::string name);
 
@@ -36,7 +41,7 @@ public:
 
     void takeDamage(AttackPower damage);
 
-    std::string getName() {printf("IMIE POTWORA\n"); return name;}
+    std::string getName() { return name; }
 
 protected:
     HealthPoints health;
@@ -54,7 +59,7 @@ public:
     Mummy(HealthPoints health, AttackPower attack);
 };
 
-class Vampire : public  Monster {
+class Vampire : public Monster {
 public:
     Vampire(HealthPoints health, AttackPower attack);
 };
@@ -74,11 +79,11 @@ public:
 
     void takeDamage(AttackPower Damage);
 
-    std::string getName() { return name;}
+    std::string getName() { return name; }
 
 
     void wypisz_sie() {
-        printf("Gropu_of_montsers:\n");
+        printf("Group_of_montsers:\n");
         for (auto m : monsters) {
             printf("- h=%d, a=%d\n", m->getHealth(), m->getAttackPower());
         }
