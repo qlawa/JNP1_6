@@ -108,9 +108,6 @@ public:
     SmallTown(Time t0, Time t1, std::shared_ptr<MonsterBase> m, Status s);
 
     Status &getStatus() {
-        //status.name = monster_base->getName();
-        //status.healthPoints = monster_base->getHealth();
-        //status.aliveCitizens = getAlive();
         return status;
     }
 
